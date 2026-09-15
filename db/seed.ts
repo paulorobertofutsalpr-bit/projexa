@@ -1,6 +1,7 @@
 import { db } from "./index";
 import { companies, users } from "./schema";
 import { eq } from "drizzle-orm";
+import { hashPassword } from "@/lib/auth";
 
 async function main() {
   const companyId = "seed-company-1";
@@ -19,14 +20,16 @@ async function main() {
 
   const existingUser = await db.select().from(users).where(eq(users.email, "admin@projexa.com.br"));
   if (existingUser.length === 0) {
+    const passwordHash = await hashPassword("projexa123");
     await db.insert(users).values({
       id: "seed-user-1",
       name: "Administrador",
       email: "admin@projexa.com.br",
+      passwordHash,
       role: "ADMIN",
       companyId,
     });
-    console.log("Usuário admin de exemplo criado.");
+    console.log("Usuário admin de exemplo criado (senha: projexa123).");
   } else {
     console.log("Usuário admin já existe, pulando.");
   }
