@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { clients, clientHistoryEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
+import { logActivity } from "@/lib/activity";
 import { randomUUID } from "crypto";
 
 export async function GET() {
@@ -43,6 +44,15 @@ export async function POST(request: NextRequest) {
     id: randomUUID(),
     clientId: id,
     description: "Cliente cadastrado",
+  });
+
+  await logActivity({
+    companyId: user.companyId,
+    userId: user.id,
+    userName: user.name,
+    action: `cadastrou o cliente "${body.nome.trim()}"`,
+    entityType: "cliente",
+    entityId: id,
   });
 
   return NextResponse.json({ ok: true, id });

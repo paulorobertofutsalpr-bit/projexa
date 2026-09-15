@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { budgets, budgetItems, projects, clientHistoryEvents } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
+import { logActivity } from "@/lib/activity";
 import { randomUUID } from "crypto";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -49,6 +50,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     id: randomUUID(),
     clientId: budget.clientId,
     description: `Projeto ${numero} criado a partir do orçamento ${budget.numero}`,
+  });
+
+  await logActivity({
+    companyId: user.companyId,
+    userId: user.id,
+    userName: user.name,
+    action: `converteu o orçamento ${budget.numero} no projeto ${numero}`,
+    entityType: "projeto",
+    entityId: projectId,
   });
 
   return NextResponse.json({ ok: true, id: projectId });

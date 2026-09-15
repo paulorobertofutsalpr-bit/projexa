@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { budgets, clientHistoryEvents } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
+import { logActivity } from "@/lib/activity";
 import { randomUUID } from "crypto";
 
 const ALLOWED = ["Rascunho", "Enviado", "Aprovado", "Recusado"];
@@ -31,6 +32,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     id: randomUUID(),
     clientId: budget.clientId,
     description: `Orçamento ${budget.numero} marcado como ${status}`,
+  });
+
+  await logActivity({
+    companyId: user.companyId,
+    userId: user.id,
+    userName: user.name,
+    action: `alterou o status do orçamento ${budget.numero} para ${status}`,
+    entityType: "orcamento",
+    entityId: id,
   });
 
   return NextResponse.json({ ok: true });

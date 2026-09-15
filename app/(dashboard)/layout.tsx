@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import Sidebar from "@/components/Sidebar";
+import GlobalSearch from "@/components/GlobalSearch";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
@@ -11,8 +12,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Sidebar userName={user.name} companyName={user.companyName} logoData={user.companyLogoData} />
-      <div className="flex-1 min-w-0">
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+      <div className="flex-1 min-w-0 flex flex-col">
+        <header className="h-16 border-b border-slate-200 bg-white flex items-center px-4 sm:px-6 shrink-0">
+          <GlobalSearch />
+        </header>
+        <main className="p-4 sm:p-6 lg:p-8 flex-1">{children}</main>
       </div>
     </div>
   );

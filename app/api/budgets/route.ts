@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { budgets, budgetItems, clientHistoryEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
+import { logActivity } from "@/lib/activity";
 import { randomUUID, randomBytes } from "crypto";
 
 type ItemInput = {
@@ -96,6 +97,15 @@ export async function POST(request: NextRequest) {
     id: randomUUID(),
     clientId: body.clientId,
     description: `Orçamento ${numero} criado`,
+  });
+
+  await logActivity({
+    companyId: user.companyId,
+    userId: user.id,
+    userName: user.name,
+    action: `criou o orçamento ${numero}`,
+    entityType: "orcamento",
+    entityId: id,
   });
 
   return NextResponse.json({ ok: true, id });
