@@ -1,13 +1,13 @@
-# Projexa — Fase 0 + Fase 1 + Fase 2 (enriquecida) + Fase 3
+# Projexa — Fase 0 a 4
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 3 — Projetos):
-- Módulo de Projetos com quadro kanban por status (Planejamento, Em andamento, Em revisão, Aguardando cliente, Pausado, Concluído)
-- Mudança de status direto no card, com barra de progresso
-- Página de detalhe do projeto
-- Botão "Converter em projeto" no orçamento aprovado — cria o projeto automaticamente a partir do orçamento (cliente, objeto, prazo), e mostra no projeto de qual orçamento ele se originou
-- Conversão é idempotente: clicar de novo não duplica o projeto
+Novidades desta entrega (Fase 4 — Documentos):
+- Central de documentos dentro de cada projeto
+- Upload por categoria (Contratos, Plantas, Laudos, ART/RRT/TRT, Fotos, etc.)
+- Controle de versão: enviar uma nova versão do mesmo documento mantém o histórico
+- Download com conteúdo íntegro, exclusão por versão
+- Arquivos armazenados no próprio banco de dados (limite de 4MB por arquivo) — não depende de disco do servidor, que se perderia a cada deploy no Render
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

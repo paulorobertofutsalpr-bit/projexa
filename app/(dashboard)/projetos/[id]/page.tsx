@@ -6,6 +6,7 @@ import { projects, clients, budgets } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { formatBRL } from "@/lib/format";
 import StatusBadge from "@/components/StatusBadge";
+import ProjectDocuments from "@/components/ProjectDocuments";
 
 export const dynamic = "force-dynamic";
 
@@ -91,6 +92,11 @@ export default async function ProjetoDetailPage({ params }: { params: Promise<{ 
           — {formatBRL(originBudget.total)}
         </div>
       )}
+
+      <div>
+        <h2 className="text-sm font-medium text-slate-700 mb-3">Documentos</h2>
+        <ProjectDocuments projectId={project.id} />
+      </div>
     </div>
   );
 }

@@ -137,6 +137,24 @@ export const projects = pgTable("projects", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const documents = pgTable("documents", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id),
+  groupId: text("group_id").notNull(),
+  categoria: text("categoria").notNull().default("Outros"),
+  nome: text("nome").notNull(),
+  tipo: text("tipo").notNull(),
+  tamanho: integer("tamanho").notNull(),
+  conteudo: text("conteudo").notNull(),
+  versao: integer("versao").notNull().default(1),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const projectsRelations = relations(projects, ({ one }) => ({
   client: one(clients, {
     fields: [projects.clientId],

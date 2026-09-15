@@ -43,6 +43,13 @@
       "when": 1789442605334,
       "tag": "0005_glamorous_marvel_apes",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789442897379,
+      "tag": "0006_magenta_phalanx",
+      "breakpoints": true
     }
   ]
 }
