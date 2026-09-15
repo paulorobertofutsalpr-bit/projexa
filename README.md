@@ -1,13 +1,13 @@
-# Projexa — Fase 0 + Fase 1
+# Projexa — Fase 0 + Fase 1 + Fase 2
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega:
-- Autenticação real (login/logout com sessão em cookie, senha com hash bcrypt)
-- Todas as páginas internas exigem login (redirecionamento automático via `proxy.ts`)
-- Módulo de Clientes completo: listar, cadastrar, ver detalhe com histórico, excluir
-- Dashboard com indicadores reais (contagem de clientes e usuários da empresa)
-- Sidebar de navegação reutilizável
+Novidades desta entrega (Fase 2 — Orçamentos e Propostas):
+- Criar orçamento com itens dinâmicos (nome + valor), vinculado a um cliente
+- Marcar orçamento como Enviado, gerando um link público (`/proposta/[token]`)
+- Página pública da proposta — o cliente aprova ou recusa sem precisar de conta
+- Aprovação registra data/hora e IP
+- Histórico do cliente atualizado automaticamente a cada evento (criação, envio, aprovação)
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

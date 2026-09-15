@@ -15,6 +15,13 @@
       "when": 1789432335888,
       "tag": "0001_soft_charles_xavier",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789433505333,
+      "tag": "0002_simple_blue_shield",
+      "breakpoints": true
     }
   ]
 }

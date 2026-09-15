@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const companies = pgTable("companies", {
@@ -54,9 +54,51 @@ export const clientHistoryEvents = pgTable("client_history_events", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const budgets = pgTable("budgets", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  clientId: text("client_id")
+    .notNull()
+    .references(() => clients.id),
+  numero: text("numero").notNull(),
+  status: text("status").notNull().default("Rascunho"),
+  total: integer("total").notNull().default(0),
+  publicToken: text("public_token").notNull().unique(),
+  approvedAt: timestamp("approved_at"),
+  approvedIp: text("approved_ip"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const budgetItems = pgTable("budget_items", {
+  id: text("id").primaryKey(),
+  budgetId: text("budget_id")
+    .notNull()
+    .references(() => budgets.id),
+  nome: text("nome").notNull(),
+  valor: integer("valor").notNull(),
+});
+
+export const budgetsRelations = relations(budgets, ({ one, many }) => ({
+  client: one(clients, {
+    fields: [budgets.clientId],
+    references: [clients.id],
+  }),
+  items: many(budgetItems),
+}));
+
+export const budgetItemsRelations = relations(budgetItems, ({ one }) => ({
+  budget: one(budgets, {
+    fields: [budgetItems.budgetId],
+    references: [budgets.id],
+  }),
+}));
+
 export const companiesRelations = relations(companies, ({ many }) => ({
   users: many(users),
   clients: many(clients),
+  budgets: many(budgets),
 }));
 
 export const usersRelations = relations(users, ({ one }) => ({
