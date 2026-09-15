@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, doublePrecision, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const companies = pgTable("companies", {
@@ -52,6 +52,7 @@ export const clients = pgTable("clients", {
   bairro: text("bairro"),
   cep: text("cep"),
   observacoes: text("observacoes"),
+  portalToken: text("portal_token").unique(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -152,6 +153,7 @@ export const documents = pgTable("documents", {
   tamanho: integer("tamanho").notNull(),
   conteudo: text("conteudo").notNull(),
   versao: integer("versao").notNull().default(1),
+  visivelCliente: boolean("visivel_cliente").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -183,6 +185,31 @@ export const activityLogs = pgTable("activity_logs", {
   action: text("action").notNull(),
   entityType: text("entity_type").notNull(),
   entityId: text("entity_id"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const contracts = pgTable("contracts", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  clientId: text("client_id")
+    .notNull()
+    .references(() => clients.id),
+  budgetId: text("budget_id").references(() => budgets.id),
+  projectId: text("project_id").references(() => projects.id),
+  numero: text("numero").notNull(),
+  objeto: text("objeto"),
+  valor: integer("valor").notNull().default(0),
+  condicaoPagamento: text("condicao_pagamento"),
+  prazoExecucao: text("prazo_execucao"),
+  clausulas: text("clausulas"),
+  status: text("status").notNull().default("Rascunho"),
+  publicToken: text("public_token").notNull().unique(),
+  assinadoNome: text("assinado_nome"),
+  assinadoCpf: text("assinado_cpf"),
+  assinadoIp: text("assinado_ip"),
+  assinadoEm: timestamp("assinado_em"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

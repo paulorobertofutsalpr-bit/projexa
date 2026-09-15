@@ -11,6 +11,7 @@ type Doc = {
   tipo: string;
   tamanho: number;
   versao: number;
+  visivelCliente: boolean;
   createdAt: string;
 };
 
@@ -40,6 +41,7 @@ export default function ProjectDocuments({ projectId }: { projectId: string }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [categoria, setCategoria] = useState("Outros");
+  const [visivelCliente, setVisivelCliente] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   function load() {
@@ -75,6 +77,7 @@ export default function ProjectDocuments({ projectId }: { projectId: string }) {
           conteudo: reader.result,
           categoria,
           groupId,
+          visivelCliente,
         }),
       });
       const data = await res.json();
@@ -114,6 +117,10 @@ export default function ProjectDocuments({ projectId }: { projectId: string }) {
             <option key={c}>{c}</option>
           ))}
         </select>
+        <label className="flex items-center gap-1.5 text-xs text-slate-600">
+          <input type="checkbox" checked={visivelCliente} onChange={(e) => setVisivelCliente(e.target.checked)} />
+          Visível ao cliente
+        </label>
         <label className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md cursor-pointer">
           <Upload size={16} />
           {uploading ? "Enviando..." : "Enviar documento"}
@@ -134,6 +141,7 @@ export default function ProjectDocuments({ projectId }: { projectId: string }) {
                 <div className="text-sm font-medium text-slate-900 truncate">{latest.nome}</div>
                 <div className="text-xs text-slate-400">
                   {latest.categoria} · {formatSize(latest.tamanho)} · v{latest.versao}
+                  {latest.visivelCliente && <span className="ml-2 text-emerald-600">· Visível ao cliente</span>}
                 </div>
               </div>
               <a href={`/api/documents/${latest.id}/download`} className="text-slate-400 hover:text-blue-600 p-1">

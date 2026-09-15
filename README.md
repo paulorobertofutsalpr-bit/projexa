@@ -1,15 +1,14 @@
-# Projexa — Fase 0 a 6
+# Projexa — Fase 0 a 7
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 6):
-- **Log de atividades** (`/atividades`) — registra quem fez o quê e quando (cliente cadastrado, orçamento criado/aprovado, projeto convertido, status alterado, pagamento baixado)
-- **Central de pendências** (`/pendencias`) — reúne orçamentos aguardando resposta, aprovados sem projeto, contas atrasadas ou vencendo, e projetos com prazo apertado
-- **Busca global** — barra no topo do painel, busca clientes/orçamentos/projetos em tempo real
-- **Relatórios** (`/relatorios`) — exportação em CSV de clientes, orçamentos, projetos e financeiro (abre direto no Excel/Google Sheets)
-- Filtro por status na listagem de orçamentos
+Novidades desta entrega (Fase 7):
+- **Contratos**: botão "Gerar contrato" no orçamento aprovado, com número automático (CONT-AAAA-NNNN), objeto, valor, condição de pagamento e cláusulas
+- **Assinatura eletrônica**: página pública (`/contrato/[token]`) onde o cliente digita nome e CPF/CNPJ para assinar — registra data, hora e IP como comprovante
+- **Portal do cliente** (`/portal/[token]`): link permanente por cliente, sem necessidade de conta, mostrando projetos (com progresso), propostas e documentos liberados
+- Documentos de projeto agora têm a opção "Visível ao cliente" — só o que for marcado aparece no portal
 
-Pendente para próxima entrega: checklists por tipo de projeto e notificações reais por e-mail/push (sem infraestrutura de envio configurada ainda).
+Pendente para próxima entrega: projetos recorrentes (cobrança e tarefas automáticas).
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

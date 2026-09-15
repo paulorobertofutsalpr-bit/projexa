@@ -17,6 +17,8 @@ export default function OrcamentoActions({
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [convertError, setConvertError] = useState<string | null>(null);
+  const [contractLoading, setContractLoading] = useState(false);
+  const [contractError, setContractError] = useState<string | null>(null);
 
   const publicUrl = typeof window !== "undefined" ? `${window.location.origin}/proposta/${publicToken}` : "";
 
@@ -42,6 +44,19 @@ export default function OrcamentoActions({
       return;
     }
     router.push(`/projetos/${data.id}`);
+  }
+
+  async function generateContract() {
+    setContractLoading(true);
+    setContractError(null);
+    const res = await fetch(`/api/budgets/${budgetId}/gerar-contrato`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) {
+      setContractError(data.error || "Erro ao gerar contrato.");
+      setContractLoading(false);
+      return;
+    }
+    router.push(`/contratos/${data.id}`);
   }
 
   function copyLink() {
@@ -116,13 +131,27 @@ export default function OrcamentoActions({
               {convertError}
             </div>
           )}
-          <button
-            onClick={convertToProject}
-            disabled={loading}
-            className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            Converter em projeto
-          </button>
+          {contractError && (
+            <div className="text-sm text-rose-700 bg-rose-50 border-l-4 border-rose-300 px-3 py-2 rounded-r-md">
+              {contractError}
+            </div>
+          )}
+          <div className="flex gap-2">
+            <button
+              onClick={convertToProject}
+              disabled={loading}
+              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
+              Converter em projeto
+            </button>
+            <button
+              onClick={generateContract}
+              disabled={contractLoading}
+              className="px-4 py-2 text-sm border border-slate-200 text-slate-700 rounded-md hover:bg-slate-50 disabled:opacity-50"
+            >
+              {contractLoading ? "Gerando..." : "Gerar contrato"}
+            </button>
+          </div>
         </div>
       )}
     </div>

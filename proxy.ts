@@ -11,6 +11,8 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/health") ||
     pathname.startsWith("/proposta/") ||
+    pathname.startsWith("/contrato/") ||
+    pathname.startsWith("/portal/") ||
     pathname.startsWith("/api/public/");
   const hasCookie = request.cookies.has(SESSION_COOKIE);
 
