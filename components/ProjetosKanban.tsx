@@ -29,34 +29,34 @@ export default function ProjetosKanban({ projects }: { projects: Project[] }) {
   }
 
   return (
-    <div className="flex gap-4 overflow-x-auto pb-2">
+    <div className="flex gap-3 overflow-x-auto pb-2">
       {STATUSES.map((status) => {
         const items = projects.filter((p) => p.status === status);
         return (
-          <div key={status} className="w-72 shrink-0">
-            <div className="flex items-center justify-between mb-2 px-1">
-              <h3 className="text-sm font-medium text-slate-600">{status}</h3>
-              <span className="text-xs text-slate-400">{items.length}</span>
+          <div key={status} className="w-56 shrink-0">
+            <div className="flex items-center justify-between mb-1.5 px-1">
+              <h3 className="text-xs font-medium text-slate-600 truncate">{status}</h3>
+              <span className="text-[10px] text-slate-400 shrink-0 ml-1">{items.length}</span>
             </div>
-            <div className="space-y-2 bg-slate-100/70 rounded-lg p-2 min-h-[80px]">
+            <div className="space-y-1.5 bg-slate-100/70 rounded-lg p-1.5 max-h-[calc(100vh-260px)] overflow-y-auto">
               {items.map((p) => (
-                <div key={p.id} className="bg-white rounded-md border border-slate-200 p-3 shadow-sm">
-                  <div className="text-xs text-slate-400 mb-1" style={{ fontFamily: "ui-monospace, monospace" }}>
+                <div key={p.id} className="bg-white rounded-md border border-slate-200 p-2 shadow-sm">
+                  <div className="text-[10px] text-slate-400 mb-0.5" style={{ fontFamily: "ui-monospace, monospace" }}>
                     {p.numero}
                   </div>
-                  <Link href={`/projetos/${p.id}`} className="font-medium text-sm text-slate-900 mb-1 hover:text-blue-600 block">
+                  <Link href={`/projetos/${p.id}`} className="font-medium text-xs text-slate-900 mb-1 hover:text-blue-600 block leading-snug">
                     {p.nome}
                   </Link>
-                  <div className="text-xs text-slate-500 mb-2">{p.clientName}</div>
-                  <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mb-2">
+                  <div className="text-[10px] text-slate-500 mb-1.5 truncate">{p.clientName}</div>
+                  <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden mb-1.5">
                     <div className="h-full bg-blue-600 rounded-full" style={{ width: `${p.progresso}%` }} />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">{p.prazo || "Sem prazo"}</span>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[10px] text-slate-400 truncate">{p.prazo || "Sem prazo"}</span>
                     <select
                       value={p.status}
                       onChange={(e) => updateStatus(p.id, e.target.value)}
-                      className="text-xs border border-slate-200 rounded px-1.5 py-0.5 text-slate-600 bg-white"
+                      className="text-[10px] border border-slate-200 rounded px-1 py-0.5 text-slate-600 bg-white shrink-0"
                     >
                       {STATUSES.concat("Cancelado").map((s) => (
                         <option key={s} value={s}>

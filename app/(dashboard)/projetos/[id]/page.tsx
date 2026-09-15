@@ -8,6 +8,7 @@ import { formatBRL } from "@/lib/format";
 import StatusBadge from "@/components/StatusBadge";
 import ProjectDocuments from "@/components/ProjectDocuments";
 import ProjectActions from "@/components/ProjectActions";
+import ProjectHistory from "@/components/ProjectHistory";
 
 export const dynamic = "force-dynamic";
 
@@ -100,6 +101,11 @@ export default async function ProjetoDetailPage({ params }: { params: Promise<{ 
       <div>
         <h2 className="text-sm font-medium text-slate-700 mb-3">Documentos</h2>
         <ProjectDocuments projectId={project.id} />
+      </div>
+
+      <div>
+        <h2 className="text-sm font-medium text-slate-700 mb-3">Histórico do projeto</h2>
+        <ProjectHistory projectId={project.id} currentUserId={user!.id} isAdmin={user!.role === "ADMIN"} />
       </div>
     </div>
   );

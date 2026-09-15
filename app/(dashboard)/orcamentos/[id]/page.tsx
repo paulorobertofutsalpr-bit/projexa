@@ -25,9 +25,15 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
       objeto: budgets.objeto,
       validadeDias: budgets.validadeDias,
       condicaoPagamento: budgets.condicaoPagamento,
+      formaPagamento: budgets.formaPagamento,
       prazoExecucao: budgets.prazoExecucao,
+      previsaoInicio: budgets.previsaoInicio,
+      localExecucao: budgets.localExecucao,
+      responsavelTecnico: budgets.responsavelTecnico,
+      garantia: budgets.garantia,
       escopoIncluso: budgets.escopoIncluso,
       escopoNaoIncluso: budgets.escopoNaoIncluso,
+      observacoesComerciais: budgets.observacoesComerciais,
       createdAt: budgets.createdAt,
       publicToken: budgets.publicToken,
       approvedAt: budgets.approvedAt,
@@ -98,19 +104,56 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
           <div className="text-xs text-slate-400">Validade</div>
           <div className="text-slate-800">{formatDate(dataValidade)} ({budget.validadeDias} dias)</div>
         </div>
+        {budget.previsaoInicio && (
+          <div>
+            <div className="text-xs text-slate-400">Previsão de início</div>
+            <div className="text-slate-800">{budget.previsaoInicio}</div>
+          </div>
+        )}
         {budget.prazoExecucao && (
           <div>
             <div className="text-xs text-slate-400">Prazo de execução</div>
             <div className="text-slate-800">{budget.prazoExecucao}</div>
           </div>
         )}
+        {budget.localExecucao && (
+          <div>
+            <div className="text-xs text-slate-400">Local de execução</div>
+            <div className="text-slate-800">{budget.localExecucao}</div>
+          </div>
+        )}
         {budget.condicaoPagamento && (
-          <div className="col-span-2">
+          <div>
             <div className="text-xs text-slate-400">Condição de pagamento</div>
             <div className="text-slate-800">{budget.condicaoPagamento}</div>
           </div>
         )}
+        {budget.formaPagamento && (
+          <div>
+            <div className="text-xs text-slate-400">Forma de pagamento</div>
+            <div className="text-slate-800">{budget.formaPagamento}</div>
+          </div>
+        )}
+        {budget.responsavelTecnico && (
+          <div>
+            <div className="text-xs text-slate-400">Responsável técnico</div>
+            <div className="text-slate-800">{budget.responsavelTecnico}</div>
+          </div>
+        )}
+        {budget.garantia && (
+          <div>
+            <div className="text-xs text-slate-400">Garantia</div>
+            <div className="text-slate-800">{budget.garantia}</div>
+          </div>
+        )}
       </div>
+
+      {budget.observacoesComerciais && (
+        <div className="bg-white border border-slate-200 rounded-lg p-5">
+          <h2 className="text-xs uppercase tracking-wide text-slate-400 mb-2">Observações comerciais</h2>
+          <p className="text-sm text-slate-700 whitespace-pre-line">{budget.observacoesComerciais}</p>
+        </div>
+      )}
 
       {(budget.escopoIncluso || budget.escopoNaoIncluso) && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

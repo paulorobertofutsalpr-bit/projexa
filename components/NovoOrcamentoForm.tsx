@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus, Trash2 } from "lucide-react";
+import FieldLabel from "@/components/FieldLabel";
+import InfoTooltip from "@/components/InfoTooltip";
 
 type Client = { id: string; nome: string };
 type Item = {
@@ -18,7 +20,8 @@ type Item = {
 };
 
 const UNIDADES = ["Serviço", "Unidade", "Visita", "Hora", "m²", "Diária"];
-const CATEGORIAS = ["Serviço", "Material", "Despesa", "Deslocamento", "Taxa", "ART/RRT", "Outro"];
+const CATEGORIAS_SUGERIDAS = ["Serviço", "Material", "Despesa", "Deslocamento", "Taxa", "ART/RRT", "Outro"];
+const FORMAS_PAGAMENTO = ["PIX", "Transferência", "Boleto", "Cartão", "Dinheiro", "Outro"];
 
 function emptyItem(): Item {
   return {
@@ -33,21 +36,27 @@ function emptyItem(): Item {
   };
 }
 
+const inputClass =
+  "w-full px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
+
 export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
   const router = useRouter();
   const [clientId, setClientId] = useState(clients[0]?.id || "");
   const [objeto, setObjeto] = useState("");
   const [validadeDias, setValidadeDias] = useState("15");
   const [condicaoPagamento, setCondicaoPagamento] = useState("");
+  const [formaPagamento, setFormaPagamento] = useState("");
   const [prazoExecucao, setPrazoExecucao] = useState("");
+  const [previsaoInicio, setPrevisaoInicio] = useState("");
+  const [localExecucao, setLocalExecucao] = useState("");
+  const [responsavelTecnico, setResponsavelTecnico] = useState("");
+  const [garantia, setGarantia] = useState("");
   const [escopoIncluso, setEscopoIncluso] = useState("");
   const [escopoNaoIncluso, setEscopoNaoIncluso] = useState("");
+  const [observacoesComerciais, setObservacoesComerciais] = useState("");
   const [items, setItems] = useState<Item[]>([emptyItem()]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const inputClass =
-    "w-full px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
 
   function addItem() {
     setItems((prev) => [...prev, emptyItem()]);
@@ -84,9 +93,15 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
         objeto,
         validadeDias: parseInt(validadeDias) || 15,
         condicaoPagamento,
+        formaPagamento,
         prazoExecucao,
+        previsaoInicio,
+        localExecucao,
+        responsavelTecnico,
+        garantia,
         escopoIncluso,
         escopoNaoIncluso,
+        observacoesComerciais,
         itens: items.map((i) => ({
           nome: i.nome,
           categoria: i.categoria,
@@ -138,7 +153,7 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
             <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-4">
               <h2 className="text-sm font-medium text-slate-700">Dados gerais</h2>
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Cliente</label>
+                <FieldLabel label="Cliente" info="O cliente que receberá esta proposta. Precisa estar cadastrado antes." />
                 <select value={clientId} onChange={(e) => setClientId(e.target.value)} className={inputClass}>
                   {clients.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -148,7 +163,10 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Objeto da proposta</label>
+                <FieldLabel
+                  label="Objeto da proposta"
+                  info="Descrição resumida do serviço contratado. Aparece em destaque no início do PDF e da página pública."
+                />
                 <textarea
                   value={objeto}
                   onChange={(e) => setObjeto(e.target.value)}
@@ -159,7 +177,7 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">Validade (dias)</label>
+                  <FieldLabel label="Validade (dias)" info="Quantos dias após a criação esta proposta continua válida para aprovação." />
                   <input
                     type="number"
                     value={validadeDias}
@@ -168,7 +186,18 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">Prazo de execução</label>
+                  <FieldLabel label="Previsão de início" info="Data ou condição prevista para o início dos trabalhos, se já souber." />
+                  <input
+                    value={previsaoInicio}
+                    onChange={(e) => setPrevisaoInicio(e.target.value)}
+                    placeholder="Ex: em até 5 dias após aprovação"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <FieldLabel label="Prazo de execução" info="Tempo estimado para concluir o serviço, contado a partir do início." />
                   <input
                     value={prazoExecucao}
                     onChange={(e) => setPrazoExecucao(e.target.value)}
@@ -176,21 +205,66 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                     className={inputClass}
                   />
                 </div>
+                <div>
+                  <FieldLabel label="Local de execução" info="Endereço da obra/serviço, se for diferente do endereço cadastrado do cliente." />
+                  <input
+                    value={localExecucao}
+                    onChange={(e) => setLocalExecucao(e.target.value)}
+                    placeholder="Deixe em branco se for o endereço do cliente"
+                    className={inputClass}
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Condição de pagamento</label>
-                <input
-                  value={condicaoPagamento}
-                  onChange={(e) => setCondicaoPagamento(e.target.value)}
-                  placeholder="Ex: 50% na aprovação + 50% na entrega"
-                  className={inputClass}
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <FieldLabel label="Condição de pagamento" info="Como o pagamento será dividido. Ex: à vista, parcelado, entrada + saldo." />
+                  <input
+                    value={condicaoPagamento}
+                    onChange={(e) => setCondicaoPagamento(e.target.value)}
+                    placeholder="Ex: 50% na aprovação + 50% na entrega"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <FieldLabel label="Forma de pagamento" info="Meio pelo qual o pagamento será recebido." />
+                  <select value={formaPagamento} onChange={(e) => setFormaPagamento(e.target.value)} className={inputClass}>
+                    <option value="">Selecione</option>
+                    {FORMAS_PAGAMENTO.map((f) => (
+                      <option key={f}>{f}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <FieldLabel
+                    label="Responsável técnico"
+                    info="Nome do profissional responsável tecnicamente pelo serviço (aparece no documento gerado)."
+                  />
+                  <input
+                    value={responsavelTecnico}
+                    onChange={(e) => setResponsavelTecnico(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <FieldLabel label="Garantia" info="Prazo ou condição de garantia oferecida sobre o serviço, se houver." />
+                  <input
+                    value={garantia}
+                    onChange={(e) => setGarantia(e.target.value)}
+                    placeholder="Ex: 12 meses contra defeitos de projeto"
+                    className={inputClass}
+                  />
+                </div>
               </div>
             </div>
 
             <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-medium text-slate-700">Itens do orçamento</h2>
+                <h2 className="text-sm font-medium text-slate-700 flex items-center">
+                  Itens do orçamento
+                  <InfoTooltip text="Cada item soma automaticamente ao valor total. A categoria pode ser uma das sugeridas ou uma nova, digitada por você." />
+                </h2>
                 <button type="button" onClick={addItem} className="text-xs text-blue-600 hover:underline flex items-center gap-1">
                   <Plus size={14} /> Adicionar item
                 </button>
@@ -205,15 +279,13 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                         placeholder="Ex: Projeto estrutural"
                         className="flex-1 min-w-0 px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
-                      <select
+                      <input
+                        list="categorias-sugeridas"
                         value={item.categoria}
                         onChange={(e) => updateItem(item.id, "categoria", e.target.value)}
+                        placeholder="Categoria"
                         className="shrink-0 w-28 sm:w-36 px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {CATEGORIAS.map((c) => (
-                          <option key={c}>{c}</option>
-                        ))}
-                      </select>
+                      />
                       {items.length > 1 && (
                         <button type="button" onClick={() => removeItem(item.id)} className="text-slate-400 hover:text-rose-500">
                           <Trash2 size={16} />
@@ -276,6 +348,11 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                   </div>
                 ))}
               </div>
+              <datalist id="categorias-sugeridas">
+                {CATEGORIAS_SUGERIDAS.map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
               <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                 <span className="text-sm text-slate-600">Total geral</span>
                 <span className="text-lg font-semibold text-slate-900">
@@ -287,7 +364,7 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
             <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-4">
               <h2 className="text-sm font-medium text-slate-700">Escopo</h2>
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">O que está incluso (um item por linha)</label>
+                <FieldLabel label="O que está incluso (um item por linha)" />
                 <textarea
                   value={escopoIncluso}
                   onChange={(e) => setEscopoIncluso(e.target.value)}
@@ -297,13 +374,25 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">O que não está incluso (um item por linha)</label>
+                <FieldLabel label="O que não está incluso (um item por linha)" />
                 <textarea
                   value={escopoNaoIncluso}
                   onChange={(e) => setEscopoNaoIncluso(e.target.value)}
                   placeholder={"Taxas de órgãos públicos\nExecução da obra\nFornecimento de materiais"}
                   className={inputClass}
                   rows={4}
+                />
+              </div>
+              <div>
+                <FieldLabel
+                  label="Observações comerciais"
+                  info="Informações adicionais da negociação que não se encaixam nos outros campos. Aparece no final do documento."
+                />
+                <textarea
+                  value={observacoesComerciais}
+                  onChange={(e) => setObservacoesComerciais(e.target.value)}
+                  className={inputClass}
+                  rows={2}
                 />
               </div>
             </div>

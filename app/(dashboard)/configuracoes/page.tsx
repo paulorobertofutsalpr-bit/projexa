@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Users } from "lucide-react";
 
 type Company = {
   name: string;
@@ -109,6 +111,20 @@ export default function ConfiguracoesPage() {
           Esses dados aparecem na logomarca do sistema e no cabeçalho dos orçamentos e propostas.
         </p>
       </div>
+
+      <Link
+        href="/configuracoes/usuarios"
+        className="flex items-center justify-between bg-white border border-slate-200 rounded-lg p-4 hover:border-blue-300"
+      >
+        <div className="flex items-center gap-3">
+          <Users size={18} className="text-slate-400" />
+          <div>
+            <div className="text-sm font-medium text-slate-900">Usuários</div>
+            <div className="text-xs text-slate-500">Cadastrar e gerenciar quem acessa o sistema</div>
+          </div>
+        </div>
+        <span className="text-slate-300">→</span>
+      </Link>
 
       <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-lg p-6 space-y-4">
         {error && (

@@ -1,36 +1,18 @@
-# Projexa — Fase 0 a 10 (roadmap original completo)
+# Projexa — Melhorias pós-roadmap (v13)
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 **Segundo usuário (equipe):** `equipe@projexa.com.br` / `projexa123`
 
-Esta entrega fecha o roadmap original (PROJEXA-ARQUITETURA.md, Fases 0 a 10).
+Melhorias desta entrega, a pedido:
 
-Novidades desta entrega (Fase 10):
-- **Dados de demonstração completos**: 3 clientes, 5 orçamentos (em todos os status: rascunho, enviado, aprovado, recusado), 3 projetos (planejamento, em andamento, concluído), 5 lançamentos financeiros (pagos, pendentes) e 2 usuários — tudo consistente e interligado
-- **Teste guiado de ponta a ponta**, rodado com navegador automatizado, cobrindo: login → cadastro de cliente → criação e aprovação de orçamento → conversão em projeto → geração e assinatura eletrônica de contrato → geração e acesso ao portal do cliente → financeiro → relatórios → pendências → log de atividades. 18 de 18 verificações passaram.
+- **Orçamento mais completo**: categoria do item agora é editável (digite uma nova ou escolha uma sugerida). Novos campos: previsão de início, local de execução (se for diferente do endereço do cliente), responsável técnico, garantia, forma de pagamento, e observações comerciais.
+- **Histórico do projeto**: registre observações com data e hora automáticas. Só quem escreveu ou um administrador pode editar/excluir — testado com um usuário comum tentando mexer no registro de outra pessoa (bloqueado corretamente).
+- **Layout de Projetos mais compacto**: colunas e cards menores, com scroll vertical próprio por coluna, cabendo melhor na tela.
+- **PDF/impressão do orçamento redesenhado**: visual de documento comercial de verdade (faixa de cor, tabela com cabeçalho escuro, bloco de valor total em destaque, linhas de assinatura para contratado/contratante, rodapé).
+- **Painel de usuários** (`/configuracoes/usuarios`): cadastrar, listar e remover usuários da empresa, com indicador de limite por plano (hoje fixo em 5 — a cobrança por plano ainda não existe, é só o indicador visual).
+- **Tooltips (i)** com explicação ao passar o mouse, aplicados nos campos do formulário de orçamento por enquanto (o mais complexo). Vou espalhar pelos outros formulários nas próximas entregas.
 
-## O que existe hoje no Projexa
-
-- Autenticação com sessão em cookie
-- Clientes: cadastro, edição, histórico, portal público por cliente
-- Orçamentos/Propostas: itens detalhados, escopo, condições, aprovação eletrônica pelo cliente, geração de contrato
-- Contratos: assinatura eletrônica com registro de nome, CPF, data e IP
-- Projetos: kanban por status, progresso, documentos com controle de versão, arquivamento, duplicação
-- Financeiro: receitas/despesas, status de atraso automático
-- Relatórios exportáveis em CSV, busca global, log de atividades, central de pendências
-- Numeração sequencial configurável por tipo de documento
-- Identidade visual (logomarca) refletida em toda a aplicação e nos documentos gerados
-- Responsivo, testado visualmente em viewport de celular
-
-## O que ainda não existe (fora do roadmap original ou fica para depois)
-
-- Cláusulas contratuais configuráveis e biblioteca de modelos de proposta
-- Versionamento formal de propostas (histórico de alterações comerciais)
-- Projetos recorrentes (cobrança e tarefas automáticas)
-- Checklists por tipo de projeto
-- Lixeira genérica (hoje só documentos têm exclusão suave por versão)
-- Multiempresa com múltiplos registros de "companies" (hoje o sistema funciona com uma empresa por instalação)
-- Notificações por e-mail/push (sem infraestrutura de envio configurada)
+Pendente para próxima entrega: sistema de mensagens entre usuário e administrador (sugestões/feedback), e tooltips nos demais formulários (clientes, financeiro, configurações).
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.
