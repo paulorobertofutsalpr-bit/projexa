@@ -1,13 +1,14 @@
-# Projexa — Fase 0 + Fase 1 + Fase 2
+# Projexa — Fase 0 + Fase 1 + Fase 2 + Melhorias
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 2 — Orçamentos e Propostas):
-- Criar orçamento com itens dinâmicos (nome + valor), vinculado a um cliente
-- Marcar orçamento como Enviado, gerando um link público (`/proposta/[token]`)
-- Página pública da proposta — o cliente aprova ou recusa sem precisar de conta
-- Aprovação registra data/hora e IP
-- Histórico do cliente atualizado automaticamente a cada evento (criação, envio, aprovação)
+Melhorias desta entrega:
+- Edição de cliente (endereço completo: rua, bairro, CEP, cidade, estado)
+- Página de Configurações da empresa: dados cadastrais + upload de logomarca
+- Logomarca exibida na sidebar (painel interno) e na tela de login
+- Orçamento e proposta pública agora mostram um cabeçalho formal com dados do
+  Contratado (sua empresa) e do Contratante (cliente), lado a lado
+- Campo de observações por item do orçamento
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

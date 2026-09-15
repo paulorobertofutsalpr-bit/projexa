@@ -55,6 +55,7 @@ export async function getCurrentUser() {
       role: users.role,
       companyId: users.companyId,
       companyName: companies.name,
+      companyLogoData: companies.logoData,
       expiresAt: sessions.expiresAt,
     })
     .from(sessions)

@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [branding, setBranding] = useState<{ name: string; logoData: string | null } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/public/branding")
+      .then((r) => r.json())
+      .then((data) => setBranding(data.company))
+      .catch(() => {});
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,15 +43,17 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 justify-center mb-8">
-          <div className="w-9 h-9 rounded bg-blue-600 text-white flex items-center justify-center font-semibold">
-            Pj
-          </div>
-          <span className="text-xl font-semibold text-slate-900">Projexa</span>
+          {branding?.logoData ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={branding.logoData} alt={branding.name} className="w-9 h-9 rounded object-contain" />
+          ) : (
+            <div className="w-9 h-9 rounded bg-blue-600 text-white flex items-center justify-center font-semibold">
+              Pj
+            </div>
+          )}
+          <span className="text-xl font-semibold text-slate-900">{branding?.name || "Projexa"}</span>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border border-slate-200 rounded-lg p-6 space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-lg p-6 space-y-4">
           <div>
             <h1 className="text-lg font-semibold text-slate-900">Entrar</h1>
             <p className="text-sm text-slate-500 mt-1">Acesse sua conta do escritório</p>
@@ -83,9 +91,6 @@ export default function LoginPage() {
             {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
-        <p className="text-center text-xs text-slate-400 mt-4">
-          Escritório modelo · admin@projexa.com.br
-        </p>
       </div>
     </div>
   );

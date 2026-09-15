@@ -6,12 +6,12 @@ import Link from "next/link";
 import { Plus, Trash2 } from "lucide-react";
 
 type Client = { id: string; nome: string };
-type Item = { id: string; nome: string; valor: string };
+type Item = { id: string; nome: string; observacoes: string; valor: string };
 
 export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
   const router = useRouter();
   const [clientId, setClientId] = useState(clients[0]?.id || "");
-  const [items, setItems] = useState<Item[]>([{ id: "1", nome: "", valor: "" }]);
+  const [items, setItems] = useState<Item[]>([{ id: "1", nome: "", observacoes: "", valor: "" }]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,12 +19,12 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
     "w-full px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
 
   function addItem() {
-    setItems((prev) => [...prev, { id: String(prev.length + 1) + Math.random(), nome: "", valor: "" }]);
+    setItems((prev) => [...prev, { id: String(prev.length + 1) + Math.random(), nome: "", observacoes: "", valor: "" }]);
   }
   function removeItem(id: string) {
     setItems((prev) => prev.filter((i) => i.id !== id));
   }
-  function updateItem(id: string, field: "nome" | "valor", value: string) {
+  function updateItem(id: string, field: "nome" | "observacoes" | "valor", value: string) {
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, [field]: value } : i)));
   }
 
@@ -43,7 +43,7 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         clientId,
-        itens: items.map((i) => ({ nome: i.nome, valor: parseFloat(i.valor) || 0 })),
+        itens: items.map((i) => ({ nome: i.nome, observacoes: i.observacoes, valor: parseFloat(i.valor) || 0 })),
       }),
     });
     const data = await res.json();
@@ -99,27 +99,35 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                   <Plus size={14} /> Adicionar item
                 </button>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {items.map((item) => (
-                  <div key={item.id} className="flex gap-2 items-center">
+                  <div key={item.id} className="border border-slate-100 rounded-md p-2 space-y-2">
+                    <div className="flex gap-2 items-center">
+                      <input
+                        value={item.nome}
+                        onChange={(e) => updateItem(item.id, "nome", e.target.value)}
+                        placeholder="Ex: Projeto estrutural"
+                        className={inputClass + " flex-1"}
+                      />
+                      <input
+                        value={item.valor}
+                        onChange={(e) => updateItem(item.id, "valor", e.target.value)}
+                        placeholder="R$"
+                        type="number"
+                        className={inputClass + " w-28"}
+                      />
+                      {items.length > 1 && (
+                        <button type="button" onClick={() => removeItem(item.id)} className="text-slate-400 hover:text-rose-500">
+                          <Trash2 size={16} />
+                        </button>
+                      )}
+                    </div>
                     <input
-                      value={item.nome}
-                      onChange={(e) => updateItem(item.id, "nome", e.target.value)}
-                      placeholder="Ex: Projeto estrutural"
-                      className={inputClass + " flex-1"}
+                      value={item.observacoes}
+                      onChange={(e) => updateItem(item.id, "observacoes", e.target.value)}
+                      placeholder="Observações do item (opcional)"
+                      className={inputClass + " text-xs"}
                     />
-                    <input
-                      value={item.valor}
-                      onChange={(e) => updateItem(item.id, "valor", e.target.value)}
-                      placeholder="R$"
-                      type="number"
-                      className={inputClass + " w-28"}
-                    />
-                    {items.length > 1 && (
-                      <button type="button" onClick={() => removeItem(item.id)} className="text-slate-400 hover:text-rose-500">
-                        <Trash2 size={16} />
-                      </button>
-                    )}
                   </div>
                 ))}
               </div>

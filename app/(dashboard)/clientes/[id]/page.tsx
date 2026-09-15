@@ -27,12 +27,20 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="max-w-2xl space-y-5">
-      <div>
-        <Link href="/clientes" className="text-sm text-blue-600 hover:underline">
-          ← Voltar para clientes
+      <div className="flex items-center justify-between">
+        <div>
+          <Link href="/clientes" className="text-sm text-blue-600 hover:underline">
+            ← Voltar para clientes
+          </Link>
+          <h1 className="text-2xl font-semibold text-slate-900 mt-2">{client.nome}</h1>
+          <p className="text-slate-500 text-sm">{client.tipo}</p>
+        </div>
+        <Link
+          href={`/clientes/${client.id}/editar`}
+          className="px-3 py-1.5 text-sm border border-slate-200 rounded-md hover:bg-slate-50 h-fit"
+        >
+          Editar
         </Link>
-        <h1 className="text-2xl font-semibold text-slate-900 mt-2">{client.nome}</h1>
-        <p className="text-slate-500 text-sm">{client.tipo}</p>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-lg p-6">
@@ -51,11 +59,23 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
             <dd className="text-slate-800">{client.email || "—"}</dd>
           </div>
           <div className="flex justify-between">
+            <dt className="text-slate-500">Endereço</dt>
+            <dd className="text-slate-800 text-right">
+              {client.endereco ? `${client.endereco}${client.bairro ? ", " + client.bairro : ""}` : "—"}
+            </dd>
+          </div>
+          <div className="flex justify-between">
             <dt className="text-slate-500">Cidade</dt>
             <dd className="text-slate-800">
               {client.cidade ? `${client.cidade}/${client.estado ?? ""}` : "—"}
             </dd>
           </div>
+          {client.cep && (
+            <div className="flex justify-between">
+              <dt className="text-slate-500">CEP</dt>
+              <dd className="text-slate-800">{client.cep}</dd>
+            </div>
+          )}
           {client.observacoes && (
             <div className="pt-2 border-t border-slate-100">
               <dt className="text-slate-500 mb-1">Observações</dt>

@@ -12,6 +12,9 @@ export default function NovoClientePage() {
     documento: "",
     telefone: "",
     email: "",
+    endereco: "",
+    bairro: "",
+    cep: "",
     cidade: "",
     estado: "",
     observacoes: "",
@@ -103,12 +106,28 @@ export default function NovoClientePage() {
             className={inputClass}
           />
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-medium text-slate-600 mb-1">Endereço</label>
+          <input
+            value={form.endereco}
+            onChange={(e) => update("endereco", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Cidade</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Bairro</label>
             <input
-              value={form.cidade}
-              onChange={(e) => update("cidade", e.target.value)}
+              value={form.bairro}
+              onChange={(e) => update("bairro", e.target.value)}
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">CEP</label>
+            <input
+              value={form.cep}
+              onChange={(e) => update("cep", e.target.value)}
               className={inputClass}
             />
           </div>
@@ -121,6 +140,14 @@ export default function NovoClientePage() {
               className={inputClass}
             />
           </div>
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-600 mb-1">Cidade</label>
+          <input
+            value={form.cidade}
+            onChange={(e) => update("cidade", e.target.value)}
+            className={inputClass}
+          />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">Observações</label>

@@ -21,7 +21,11 @@ export async function POST(request: NextRequest) {
   const items = Array.isArray(body?.itens) ? body.itens : [];
   const validItems = items
     .filter((i: { nome?: string; valor?: number }) => i.nome?.trim() && Number(i.valor) > 0)
-    .map((i: { nome: string; valor: number }) => ({ nome: i.nome.trim(), valorCentavos: Math.round(Number(i.valor) * 100) }));
+    .map((i: { nome: string; valor: number; observacoes?: string }) => ({
+      nome: i.nome.trim(),
+      observacoes: i.observacoes?.trim() || null,
+      valorCentavos: Math.round(Number(i.valor) * 100),
+    }));
 
   if (!body?.clientId || validItems.length === 0) {
     return NextResponse.json({ error: "Selecione um cliente e ao menos um item válido." }, { status: 400 });
@@ -49,6 +53,7 @@ export async function POST(request: NextRequest) {
       id: randomUUID(),
       budgetId: id,
       nome: item.nome,
+      observacoes: item.observacoes,
       valor: item.valorCentavos,
     });
   }

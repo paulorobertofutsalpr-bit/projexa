@@ -33,6 +33,9 @@ export async function POST(request: NextRequest) {
     email: body.email || null,
     cidade: body.cidade || null,
     estado: body.estado || null,
+    endereco: body.endereco || null,
+    bairro: body.bairro || null,
+    cep: body.cep || null,
     observacoes: body.observacoes || null,
   });
 

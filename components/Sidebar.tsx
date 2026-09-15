@@ -2,15 +2,24 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Settings, LogOut } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Painel", icon: LayoutDashboard },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/orcamentos", label: "Orçamentos", icon: FileText },
+  { href: "/configuracoes", label: "Configurações", icon: Settings },
 ];
 
-export default function Sidebar({ userName, companyName }: { userName: string; companyName: string }) {
+export default function Sidebar({
+  userName,
+  companyName,
+  logoData,
+}: {
+  userName: string;
+  companyName: string;
+  logoData?: string | null;
+}) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -23,10 +32,15 @@ export default function Sidebar({ userName, companyName }: { userName: string; c
   return (
     <aside className="w-64 shrink-0 hidden md:flex flex-col" style={{ backgroundColor: "#0B1D3A" }}>
       <div className="h-16 flex items-center gap-2 px-6 border-b border-white/10">
-        <div className="w-8 h-8 rounded bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">
-          Pj
-        </div>
-        <span className="text-white font-semibold text-lg tracking-tight">Projexa</span>
+        {logoData ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logoData} alt={companyName} className="w-8 h-8 rounded object-contain bg-white/5" />
+        ) : (
+          <div className="w-8 h-8 rounded bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">
+            Pj
+          </div>
+        )}
+        <span className="text-white font-semibold text-lg tracking-tight truncate">{companyName || "Projexa"}</span>
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1">
         {NAV_ITEMS.map((item) => {
@@ -49,7 +63,6 @@ export default function Sidebar({ userName, companyName }: { userName: string; c
       <div className="px-4 py-4 border-t border-white/10">
         <div className="text-xs text-slate-400 px-2 mb-2">
           <div className="text-slate-200 font-medium">{userName}</div>
-          <div>{companyName}</div>
         </div>
         <button
           onClick={handleLogout}

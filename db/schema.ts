@@ -5,6 +5,13 @@ export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   document: text("document"),
+  phone: text("phone"),
+  email: text("email"),
+  address: text("address"),
+  city: text("city"),
+  state: text("state"),
+  website: text("website"),
+  logoData: text("logo_data"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -41,6 +48,9 @@ export const clients = pgTable("clients", {
   email: text("email"),
   cidade: text("cidade"),
   estado: text("estado"),
+  endereco: text("endereco"),
+  bairro: text("bairro"),
+  cep: text("cep"),
   observacoes: text("observacoes"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
@@ -77,6 +87,7 @@ export const budgetItems = pgTable("budget_items", {
     .notNull()
     .references(() => budgets.id),
   nome: text("nome").notNull(),
+  observacoes: text("observacoes"),
   valor: integer("valor").notNull(),
 });
 
