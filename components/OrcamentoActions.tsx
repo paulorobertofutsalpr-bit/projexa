@@ -16,6 +16,7 @@ export default function OrcamentoActions({
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [convertError, setConvertError] = useState<string | null>(null);
 
   const publicUrl = typeof window !== "undefined" ? `${window.location.origin}/proposta/${publicToken}` : "";
 
@@ -28,6 +29,19 @@ export default function OrcamentoActions({
     });
     router.refresh();
     setLoading(false);
+  }
+
+  async function convertToProject() {
+    setLoading(true);
+    setConvertError(null);
+    const res = await fetch(`/api/budgets/${budgetId}/converter-projeto`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) {
+      setConvertError(data.error || "Erro ao converter.");
+      setLoading(false);
+      return;
+    }
+    router.push(`/projetos/${data.id}`);
   }
 
   function copyLink() {
@@ -92,6 +106,22 @@ export default function OrcamentoActions({
             className="text-xs text-rose-700 hover:underline"
           >
             Marcar como recusado
+          </button>
+        </div>
+      )}
+      {status === "Aprovado" && (
+        <div className="pt-2 border-t border-slate-100 space-y-2">
+          {convertError && (
+            <div className="text-sm text-rose-700 bg-rose-50 border-l-4 border-rose-300 px-3 py-2 rounded-r-md">
+              {convertError}
+            </div>
+          )}
+          <button
+            onClick={convertToProject}
+            disabled={loading}
+            className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          >
+            Converter em projeto
           </button>
         </div>
       )}

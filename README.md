@@ -1,17 +1,13 @@
-# Projexa — Fase 0 + Fase 1 + Fase 2 (enriquecida)
+# Projexa — Fase 0 + Fase 1 + Fase 2 (enriquecida) + Fase 3
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Melhorias desta entrega (módulo de orçamento/proposta enriquecido):
-- Itens com categoria, quantidade, unidade, valor unitário e desconto (cálculo automático do total)
-- Objeto da proposta (texto livre)
-- Validade em dias, com data calculada automaticamente
-- Prazo de execução e condição de pagamento (texto livre)
-- Escopo incluso / não incluso (um item por linha)
-- Dashboard de propostas: cards por status (rascunho, enviado, aprovado, recusado) + valor total + valor aprovado
-- Visualização pronta para impressão/PDF em `/orcamentos/[id]/imprimir` (usa "Salvar como PDF" do navegador)
-
-Pendente para próximas entregas: vínculo com Projetos (depende da Fase 3), cláusulas configuráveis, biblioteca de modelos, versionamento de proposta, parcelamento estruturado, relatório financeiro completo.
+Novidades desta entrega (Fase 3 — Projetos):
+- Módulo de Projetos com quadro kanban por status (Planejamento, Em andamento, Em revisão, Aguardando cliente, Pausado, Concluído)
+- Mudança de status direto no card, com barra de progresso
+- Página de detalhe do projeto
+- Botão "Converter em projeto" no orçamento aprovado — cria o projeto automaticamente a partir do orçamento (cliente, objeto, prazo), e mostra no projeto de qual orçamento ele se originou
+- Conversão é idempotente: clicar de novo não duplica o projeto
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

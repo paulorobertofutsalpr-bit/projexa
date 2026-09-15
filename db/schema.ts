@@ -118,10 +118,41 @@ export const budgetItemsRelations = relations(budgetItems, ({ one }) => ({
   }),
 }));
 
+export const projects = pgTable("projects", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  clientId: text("client_id")
+    .notNull()
+    .references(() => clients.id),
+  budgetId: text("budget_id").references(() => budgets.id),
+  numero: text("numero").notNull(),
+  nome: text("nome").notNull(),
+  descricao: text("descricao"),
+  status: text("status").notNull().default("Planejamento"),
+  progresso: integer("progresso").notNull().default(0),
+  prioridade: text("prioridade").notNull().default("Média"),
+  prazo: text("prazo"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const projectsRelations = relations(projects, ({ one }) => ({
+  client: one(clients, {
+    fields: [projects.clientId],
+    references: [clients.id],
+  }),
+  budget: one(budgets, {
+    fields: [projects.budgetId],
+    references: [budgets.id],
+  }),
+}));
+
 export const companiesRelations = relations(companies, ({ many }) => ({
   users: many(users),
   clients: many(clients),
   budgets: many(budgets),
+  projects: many(projects),
 }));
 
 export const usersRelations = relations(users, ({ one }) => ({
