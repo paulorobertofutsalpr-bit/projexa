@@ -173,6 +173,19 @@ export const financialEntries = pgTable("financial_entries", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const activityLogs = pgTable("activity_logs", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  userId: text("user_id").references(() => users.id),
+  userName: text("user_name").notNull(),
+  action: text("action").notNull(),
+  entityType: text("entity_type").notNull(),
+  entityId: text("entity_id"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const projectsRelations = relations(projects, ({ one }) => ({
   client: one(clients, {
     fields: [projects.clientId],

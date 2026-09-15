@@ -1,13 +1,15 @@
-# Projexa — Fase 0 a 5
+# Projexa — Fase 0 a 6
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 5 — Financeiro):
-- Lançamentos de receitas e despesas, com categoria e vencimento
-- Cards de resumo: receitas pagas, despesas pagas, saldo realizado, a receber, em atraso
-- Status "Atrasado" calculado automaticamente pela data (sem precisar de job agendado)
-- Marcar como pago, filtrar por tipo, excluir lançamento
-- Vínculo opcional com um cliente
+Novidades desta entrega (Fase 6):
+- **Log de atividades** (`/atividades`) — registra quem fez o quê e quando (cliente cadastrado, orçamento criado/aprovado, projeto convertido, status alterado, pagamento baixado)
+- **Central de pendências** (`/pendencias`) — reúne orçamentos aguardando resposta, aprovados sem projeto, contas atrasadas ou vencendo, e projetos com prazo apertado
+- **Busca global** — barra no topo do painel, busca clientes/orçamentos/projetos em tempo real
+- **Relatórios** (`/relatorios`) — exportação em CSV de clientes, orçamentos, projetos e financeiro (abre direto no Excel/Google Sheets)
+- Filtro por status na listagem de orçamentos
+
+Pendente para próxima entrega: checklists por tipo de projeto e notificações reais por e-mail/push (sem infraestrutura de envio configurada ainda).
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.
