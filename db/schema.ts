@@ -155,6 +155,24 @@ export const documents = pgTable("documents", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const financialEntries = pgTable("financial_entries", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  clientId: text("client_id").references(() => clients.id),
+  projectId: text("project_id").references(() => projects.id),
+  tipo: text("tipo").notNull(),
+  descricao: text("descricao").notNull(),
+  categoria: text("categoria").notNull().default("Outros"),
+  valor: integer("valor").notNull(),
+  vencimento: text("vencimento").notNull(),
+  status: text("status").notNull().default("Pendente"),
+  dataPagamento: text("data_pagamento"),
+  formaPagamento: text("forma_pagamento"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const projectsRelations = relations(projects, ({ one }) => ({
   client: one(clients, {
     fields: [projects.clientId],

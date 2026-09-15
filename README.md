@@ -1,13 +1,13 @@
-# Projexa — Fase 0 a 4
+# Projexa — Fase 0 a 5
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 4 — Documentos):
-- Central de documentos dentro de cada projeto
-- Upload por categoria (Contratos, Plantas, Laudos, ART/RRT/TRT, Fotos, etc.)
-- Controle de versão: enviar uma nova versão do mesmo documento mantém o histórico
-- Download com conteúdo íntegro, exclusão por versão
-- Arquivos armazenados no próprio banco de dados (limite de 4MB por arquivo) — não depende de disco do servidor, que se perderia a cada deploy no Render
+Novidades desta entrega (Fase 5 — Financeiro):
+- Lançamentos de receitas e despesas, com categoria e vencimento
+- Cards de resumo: receitas pagas, despesas pagas, saldo realizado, a receber, em atraso
+- Status "Atrasado" calculado automaticamente pela data (sem precisar de job agendado)
+- Marcar como pago, filtrar por tipo, excluir lançamento
+- Vínculo opcional com um cliente
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.
