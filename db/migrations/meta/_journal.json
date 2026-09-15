@@ -71,6 +71,13 @@
       "when": 1789444199083,
       "tag": "0009_classy_unus",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789444922898,
+      "tag": "0010_gigantic_tana_nile",
+      "breakpoints": true
     }
   ]
 }

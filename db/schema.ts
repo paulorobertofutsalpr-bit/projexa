@@ -53,6 +53,7 @@ export const clients = pgTable("clients", {
   cep: text("cep"),
   observacoes: text("observacoes"),
   portalToken: text("portal_token").unique(),
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -135,6 +136,7 @@ export const projects = pgTable("projects", {
   progresso: integer("progresso").notNull().default(0),
   prioridade: text("prioridade").notNull().default("Média"),
   prazo: text("prazo"),
+  arquivadoEm: timestamp("arquivado_em"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -211,6 +213,17 @@ export const contracts = pgTable("contracts", {
   assinadoIp: text("assinado_ip"),
   assinadoEm: timestamp("assinado_em"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const numberingSequences = pgTable("numbering_sequences", {
+  id: text("id").primaryKey(),
+  companyId: text("company_id")
+    .notNull()
+    .references(() => companies.id),
+  tipo: text("tipo").notNull(),
+  ano: integer("ano").notNull(),
+  prefixo: text("prefixo").notNull(),
+  ultimoNumero: integer("ultimo_numero").notNull().default(0),
 });
 
 export const projectsRelations = relations(projects, ({ one }) => ({
