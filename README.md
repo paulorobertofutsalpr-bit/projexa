@@ -1,16 +1,36 @@
-# Projexa — Fase 0 a 9
+# Projexa — Fase 0 a 10 (roadmap original completo)
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
+**Segundo usuário (equipe):** `equipe@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 9 — Polimento):
-- **Correção crítica de mobile**: antes, em telas de celular, a barra lateral inteira sumia e não sobrava nenhuma forma de navegar entre as telas. Agora existe um menu hambúrguer com gaveta lateral, testado visualmente em viewport de iPhone
-- Corrigido bug visual em que a busca global ficava escondida atrás da barra fixa do celular
-- Corrigido campo de nome do item no formulário de orçamento, que colapsava para uma largura ilegível em telas estreitas
-- Testado visualmente (com captura de tela automatizada) em: painel, clientes, orçamentos, novo orçamento, projetos
+Esta entrega fecha o roadmap original (PROJEXA-ARQUITETURA.md, Fases 0 a 10).
 
-Sobre performance e backups: no volume atual de dados, não há gargalo perceptível. Quando o uso crescer, o principal ganho de performance viria de paginação nas listas (hoje carregam tudo de uma vez) — vale revisitar se algum cliente reportar lentidão. Para backups automáticos do banco, o plano pago do Postgres no Render já inclui isso nativamente; não é algo que se resolve por código.
+Novidades desta entrega (Fase 10):
+- **Dados de demonstração completos**: 3 clientes, 5 orçamentos (em todos os status: rascunho, enviado, aprovado, recusado), 3 projetos (planejamento, em andamento, concluído), 5 lançamentos financeiros (pagos, pendentes) e 2 usuários — tudo consistente e interligado
+- **Teste guiado de ponta a ponta**, rodado com navegador automatizado, cobrindo: login → cadastro de cliente → criação e aprovação de orçamento → conversão em projeto → geração e assinatura eletrônica de contrato → geração e acesso ao portal do cliente → financeiro → relatórios → pendências → log de atividades. 18 de 18 verificações passaram.
 
-Pendente para a última entrega (Fase 10): dados de demonstração consistentes e um teste guiado do fluxo completo, do cadastro do cliente até o arquivamento do projeto.
+## O que existe hoje no Projexa
+
+- Autenticação com sessão em cookie
+- Clientes: cadastro, edição, histórico, portal público por cliente
+- Orçamentos/Propostas: itens detalhados, escopo, condições, aprovação eletrônica pelo cliente, geração de contrato
+- Contratos: assinatura eletrônica com registro de nome, CPF, data e IP
+- Projetos: kanban por status, progresso, documentos com controle de versão, arquivamento, duplicação
+- Financeiro: receitas/despesas, status de atraso automático
+- Relatórios exportáveis em CSV, busca global, log de atividades, central de pendências
+- Numeração sequencial configurável por tipo de documento
+- Identidade visual (logomarca) refletida em toda a aplicação e nos documentos gerados
+- Responsivo, testado visualmente em viewport de celular
+
+## O que ainda não existe (fora do roadmap original ou fica para depois)
+
+- Cláusulas contratuais configuráveis e biblioteca de modelos de proposta
+- Versionamento formal de propostas (histórico de alterações comerciais)
+- Projetos recorrentes (cobrança e tarefas automáticas)
+- Checklists por tipo de projeto
+- Lixeira genérica (hoje só documentos têm exclusão suave por versão)
+- Multiempresa com múltiplos registros de "companies" (hoje o sistema funciona com uma empresa por instalação)
+- Notificações por e-mail/push (sem infraestrutura de envio configurada)
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.
