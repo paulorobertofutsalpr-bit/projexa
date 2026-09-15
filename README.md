@@ -1,14 +1,17 @@
-# Projexa — Fase 0 + Fase 1 + Fase 2 + Melhorias
+# Projexa — Fase 0 + Fase 1 + Fase 2 (enriquecida)
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Melhorias desta entrega:
-- Edição de cliente (endereço completo: rua, bairro, CEP, cidade, estado)
-- Página de Configurações da empresa: dados cadastrais + upload de logomarca
-- Logomarca exibida na sidebar (painel interno) e na tela de login
-- Orçamento e proposta pública agora mostram um cabeçalho formal com dados do
-  Contratado (sua empresa) e do Contratante (cliente), lado a lado
-- Campo de observações por item do orçamento
+Melhorias desta entrega (módulo de orçamento/proposta enriquecido):
+- Itens com categoria, quantidade, unidade, valor unitário e desconto (cálculo automático do total)
+- Objeto da proposta (texto livre)
+- Validade em dias, com data calculada automaticamente
+- Prazo de execução e condição de pagamento (texto livre)
+- Escopo incluso / não incluso (um item por linha)
+- Dashboard de propostas: cards por status (rascunho, enviado, aprovado, recusado) + valor total + valor aprovado
+- Visualização pronta para impressão/PDF em `/orcamentos/[id]/imprimir` (usa "Salvar como PDF" do navegador)
+
+Pendente para próximas entregas: vínculo com Projetos (depende da Fase 3), cláusulas configuráveis, biblioteca de modelos, versionamento de proposta, parcelamento estruturado, relatório financeiro completo.
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

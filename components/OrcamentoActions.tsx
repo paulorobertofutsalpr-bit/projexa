@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Printer } from "lucide-react";
 
 export default function OrcamentoActions({
   budgetId,
@@ -38,7 +38,17 @@ export default function OrcamentoActions({
 
   return (
     <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-4">
-      <h2 className="text-sm font-medium text-slate-700">Ações</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-medium text-slate-700">Ações</h2>
+        <a
+          href={`/orcamentos/${budgetId}/imprimir`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:underline flex items-center gap-1"
+        >
+          <Printer size={14} /> Visualizar / gerar PDF
+        </a>
+      </div>
 
       {status === "Rascunho" && (
         <button

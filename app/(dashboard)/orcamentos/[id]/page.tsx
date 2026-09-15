@@ -8,6 +8,7 @@ import { formatBRL, formatDate } from "@/lib/format";
 import StatusBadge from "@/components/StatusBadge";
 import OrcamentoActions from "@/components/OrcamentoActions";
 import ContractPartiesHeader from "@/components/ContractPartiesHeader";
+import ScopeList from "@/components/ScopeList";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,12 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
       numero: budgets.numero,
       status: budgets.status,
       total: budgets.total,
+      objeto: budgets.objeto,
+      validadeDias: budgets.validadeDias,
+      condicaoPagamento: budgets.condicaoPagamento,
+      prazoExecucao: budgets.prazoExecucao,
+      escopoIncluso: budgets.escopoIncluso,
+      escopoNaoIncluso: budgets.escopoNaoIncluso,
       createdAt: budgets.createdAt,
       publicToken: budgets.publicToken,
       approvedAt: budgets.approvedAt,
@@ -36,6 +43,9 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
   if (!budget) notFound();
 
   const items = await db.select().from(budgetItems).where(eq(budgetItems.budgetId, id));
+
+  const dataValidade = new Date(budget.createdAt);
+  dataValidade.setDate(dataValidade.getDate() + budget.validadeDias);
 
   return (
     <div className="max-w-2xl space-y-5">
@@ -54,11 +64,24 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
 
       <ContractPartiesHeader company={budget.company} client={budget.client} />
 
+      {budget.objeto && (
+        <div className="bg-white border border-slate-200 rounded-lg p-5">
+          <h2 className="text-xs uppercase tracking-wide text-slate-400 mb-2">Objeto da proposta</h2>
+          <p className="text-sm text-slate-700 whitespace-pre-line">{budget.objeto}</p>
+        </div>
+      )}
+
       <div className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-100">
         {items.map((i) => (
           <div key={i.id} className="px-5 py-3 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-slate-700">{i.nome}</span>
+              <div>
+                <span className="text-slate-700">{i.nome}</span>
+                <span className="text-xs text-slate-400 ml-2">
+                  {i.quantidade} {i.unidade} × {formatBRL(i.valorUnitario)}
+                  {i.desconto > 0 ? ` − ${formatBRL(i.desconto)} desc.` : ""}
+                </span>
+              </div>
               <span className="font-medium text-slate-900">{formatBRL(i.valor)}</span>
             </div>
             {i.observacoes && <div className="text-xs text-slate-400 mt-1">{i.observacoes}</div>}
@@ -69,6 +92,32 @@ export default async function OrcamentoDetailPage({ params }: { params: Promise<
           <span className="text-lg font-semibold text-slate-900">{formatBRL(budget.total)}</span>
         </div>
       </div>
+
+      <div className="bg-white border border-slate-200 rounded-lg p-5 grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <div className="text-xs text-slate-400">Validade</div>
+          <div className="text-slate-800">{formatDate(dataValidade)} ({budget.validadeDias} dias)</div>
+        </div>
+        {budget.prazoExecucao && (
+          <div>
+            <div className="text-xs text-slate-400">Prazo de execução</div>
+            <div className="text-slate-800">{budget.prazoExecucao}</div>
+          </div>
+        )}
+        {budget.condicaoPagamento && (
+          <div className="col-span-2">
+            <div className="text-xs text-slate-400">Condição de pagamento</div>
+            <div className="text-slate-800">{budget.condicaoPagamento}</div>
+          </div>
+        )}
+      </div>
+
+      {(budget.escopoIncluso || budget.escopoNaoIncluso) && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <ScopeList title="O que está incluso" text={budget.escopoIncluso} tone="positive" />
+          <ScopeList title="O que não está incluso" text={budget.escopoNaoIncluso} tone="negative" />
+        </div>
+      )}
 
       {budget.approvedAt && (
         <div className="text-sm text-emerald-700 bg-emerald-50 border-l-4 border-emerald-300 px-4 py-2 rounded-r-md">

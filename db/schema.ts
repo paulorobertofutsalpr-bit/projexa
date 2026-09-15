@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, doublePrecision } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const companies = pgTable("companies", {
@@ -74,6 +74,13 @@ export const budgets = pgTable("budgets", {
     .references(() => clients.id),
   numero: text("numero").notNull(),
   status: text("status").notNull().default("Rascunho"),
+  objeto: text("objeto"),
+  validadeDias: integer("validade_dias").notNull().default(15),
+  condicaoPagamento: text("condicao_pagamento"),
+  prazoExecucao: text("prazo_execucao"),
+  escopoIncluso: text("escopo_incluso"),
+  escopoNaoIncluso: text("escopo_nao_incluso"),
+  observacoesComerciais: text("observacoes_comerciais"),
   total: integer("total").notNull().default(0),
   publicToken: text("public_token").notNull().unique(),
   approvedAt: timestamp("approved_at"),
@@ -86,8 +93,13 @@ export const budgetItems = pgTable("budget_items", {
   budgetId: text("budget_id")
     .notNull()
     .references(() => budgets.id),
+  categoria: text("categoria").notNull().default("Serviço"),
   nome: text("nome").notNull(),
   observacoes: text("observacoes"),
+  quantidade: doublePrecision("quantidade").notNull().default(1),
+  unidade: text("unidade").notNull().default("Serviço"),
+  valorUnitario: integer("valor_unitario").notNull().default(0),
+  desconto: integer("desconto").notNull().default(0),
   valor: integer("valor").notNull(),
 });
 
