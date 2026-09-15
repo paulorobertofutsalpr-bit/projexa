@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
 import { clients, clientHistoryEvents } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
+import ClientPortalLink from "@/components/ClientPortalLink";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,8 @@ export default async function ClienteDetailPage({ params }: { params: Promise<{ 
           )}
         </dl>
       </div>
+
+      <ClientPortalLink clientId={client.id} portalToken={client.portalToken} />
 
       <div className="bg-white border border-slate-200 rounded-lg p-6">
         <h2 className="text-xs uppercase tracking-wide text-slate-400 mb-3">Histórico</h2>

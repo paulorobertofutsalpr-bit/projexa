@@ -21,6 +21,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       tipo: documents.tipo,
       tamanho: documents.tamanho,
       versao: documents.versao,
+      visivelCliente: documents.visivelCliente,
       createdAt: documents.createdAt,
     })
     .from(documents)
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!projectRows[0]) return NextResponse.json({ error: "Projeto não encontrado." }, { status: 404 });
 
   const body = await request.json().catch(() => null);
-  const { nome, tipo, conteudo, categoria, groupId: existingGroupId } = body || {};
+  const { nome, tipo, conteudo, categoria, groupId: existingGroupId, visivelCliente } = body || {};
 
   if (!nome || !tipo || !conteudo) {
     return NextResponse.json({ error: "Arquivo inválido." }, { status: 400 });
@@ -80,6 +81,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     tamanho,
     conteudo,
     versao,
+    visivelCliente: Boolean(visivelCliente),
   });
 
   return NextResponse.json({ ok: true, id: docId, groupId, versao });
