@@ -203,12 +203,12 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                         value={item.nome}
                         onChange={(e) => updateItem(item.id, "nome", e.target.value)}
                         placeholder="Ex: Projeto estrutural"
-                        className={inputClass + " flex-1"}
+                        className="flex-1 min-w-0 px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <select
                         value={item.categoria}
                         onChange={(e) => updateItem(item.id, "categoria", e.target.value)}
-                        className={inputClass + " w-36"}
+                        className="shrink-0 w-28 sm:w-36 px-3 py-2 text-sm border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         {CATEGORIAS.map((c) => (
                           <option key={c}>{c}</option>
@@ -220,7 +220,7 @@ export default function NovoOrcamentoForm({ clients }: { clients: Client[] }) {
                         </button>
                       )}
                     </div>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       <div>
                         <label className="block text-[10px] text-slate-400 mb-0.5">Qtd.</label>
                         <input

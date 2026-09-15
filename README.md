@@ -1,13 +1,16 @@
-# Projexa — Fase 0 a 8
+# Projexa — Fase 0 a 9
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 8):
-- **Numeração sequencial de verdade**: orçamentos, projetos e contratos agora seguem PREFIXO-ANO-0001, 0002, 0003... por empresa (antes era um número aleatório de 4 dígitos)
-- **Arquivamento de projetos**: projetos concluídos podem ser arquivados (somem da lista/kanban principal, mas ficam em "Ver arquivados", com opção de restaurar)
-- **Duplicar projeto**: cria uma cópia com número novo, mesmo cliente, status resetado para Planejamento
+Novidades desta entrega (Fase 9 — Polimento):
+- **Correção crítica de mobile**: antes, em telas de celular, a barra lateral inteira sumia e não sobrava nenhuma forma de navegar entre as telas. Agora existe um menu hambúrguer com gaveta lateral, testado visualmente em viewport de iPhone
+- Corrigido bug visual em que a busca global ficava escondida atrás da barra fixa do celular
+- Corrigido campo de nome do item no formulário de orçamento, que colapsava para uma largura ilegível em telas estreitas
+- Testado visualmente (com captura de tela automatizada) em: painel, clientes, orçamentos, novo orçamento, projetos
 
-Pendente para próxima entrega: lixeira genérica para clientes/orçamentos excluídos (hoje a exclusão de cliente ainda é definitiva).
+Sobre performance e backups: no volume atual de dados, não há gargalo perceptível. Quando o uso crescer, o principal ganho de performance viria de paginação nas listas (hoje carregam tudo de uma vez) — vale revisitar se algum cliente reportar lentidão. Para backups automáticos do banco, o plano pago do Postgres no Render já inclui isso nativamente; não é algo que se resolve por código.
+
+Pendente para a última entrega (Fase 10): dados de demonstração consistentes e um teste guiado do fluxo completo, do cadastro do cliente até o arquivamento do projeto.
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.
