@@ -4,6 +4,7 @@ import { budgets, contracts, clientHistoryEvents } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { logActivity } from "@/lib/activity";
+import { getNextNumber } from "@/lib/numbering";
 import { randomUUID, randomBytes } from "crypto";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -27,9 +28,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   const contractId = randomUUID();
-  const year = new Date().getFullYear();
-  const seq = String(Math.floor(Math.random() * 9000) + 1000);
-  const numero = `CONT-${year}-${seq}`;
+  const numero = await getNextNumber(user.companyId, "contrato");
   const publicToken = randomBytes(16).toString("hex");
 
   await db.insert(contracts).values({

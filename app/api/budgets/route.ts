@@ -4,6 +4,7 @@ import { budgets, budgetItems, clientHistoryEvents } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 import { logActivity } from "@/lib/activity";
+import { getNextNumber } from "@/lib/numbering";
 import { randomUUID, randomBytes } from "crypto";
 
 type ItemInput = {
@@ -56,9 +57,7 @@ export async function POST(request: NextRequest) {
 
   const total = validItems.reduce((s, i) => s + i.totalCentavos, 0);
   const id = randomUUID();
-  const year = new Date().getFullYear();
-  const seq = String(Math.floor(Math.random() * 9000) + 1000);
-  const numero = `ORC-${year}-${seq}`;
+  const numero = await getNextNumber(user.companyId, "orcamento");
   const publicToken = randomBytes(16).toString("hex");
 
   await db.insert(budgets).values({

@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
+import { getNextNumber } from "@/lib/numbering";
 import { randomUUID } from "crypto";
 
 export async function GET() {
@@ -23,9 +24,7 @@ export async function POST(request: NextRequest) {
   }
 
   const id = randomUUID();
-  const year = new Date().getFullYear();
-  const seq = String(Math.floor(Math.random() * 9000) + 1000);
-  const numero = `PROJ-${year}-${seq}`;
+  const numero = await getNextNumber(user.companyId, "projeto");
 
   await db.insert(projects).values({
     id,

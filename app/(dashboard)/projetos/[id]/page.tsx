@@ -7,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { formatBRL } from "@/lib/format";
 import StatusBadge from "@/components/StatusBadge";
 import ProjectDocuments from "@/components/ProjectDocuments";
+import ProjectActions from "@/components/ProjectActions";
 
 export const dynamic = "force-dynamic";
 
@@ -54,6 +55,9 @@ export default async function ProjetoDetailPage({ params }: { params: Promise<{ 
             </p>
           </div>
           <StatusBadge status={project.status} />
+        </div>
+        <div className="mt-3">
+          <ProjectActions projectId={project.id} status={project.status} />
         </div>
       </div>
 

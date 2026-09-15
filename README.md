@@ -1,14 +1,13 @@
-# Projexa — Fase 0 a 7
+# Projexa — Fase 0 a 8
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
 
-Novidades desta entrega (Fase 7):
-- **Contratos**: botão "Gerar contrato" no orçamento aprovado, com número automático (CONT-AAAA-NNNN), objeto, valor, condição de pagamento e cláusulas
-- **Assinatura eletrônica**: página pública (`/contrato/[token]`) onde o cliente digita nome e CPF/CNPJ para assinar — registra data, hora e IP como comprovante
-- **Portal do cliente** (`/portal/[token]`): link permanente por cliente, sem necessidade de conta, mostrando projetos (com progresso), propostas e documentos liberados
-- Documentos de projeto agora têm a opção "Visível ao cliente" — só o que for marcado aparece no portal
+Novidades desta entrega (Fase 8):
+- **Numeração sequencial de verdade**: orçamentos, projetos e contratos agora seguem PREFIXO-ANO-0001, 0002, 0003... por empresa (antes era um número aleatório de 4 dígitos)
+- **Arquivamento de projetos**: projetos concluídos podem ser arquivados (somem da lista/kanban principal, mas ficam em "Ver arquivados", com opção de restaurar)
+- **Duplicar projeto**: cria uma cópia com número novo, mesmo cliente, status resetado para Planejamento
 
-Pendente para próxima entrega: projetos recorrentes (cobrança e tarefas automáticas).
+Pendente para próxima entrega: lixeira genérica para clientes/orçamentos excluídos (hoje a exclusão de cliente ainda é definitiva).
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

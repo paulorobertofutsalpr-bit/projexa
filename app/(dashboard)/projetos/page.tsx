@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
 import { projects, clients } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import ProjetosKanban from "@/components/ProjetosKanban";
 
 export const dynamic = "force-dynamic";
@@ -22,13 +23,18 @@ export default async function ProjetosPage() {
     })
     .from(projects)
     .innerJoin(clients, eq(projects.clientId, clients.id))
-    .where(eq(projects.companyId, user!.companyId));
+    .where(and(eq(projects.companyId, user!.companyId), isNull(projects.arquivadoEm)));
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Projetos</h1>
-        <p className="text-slate-500 text-sm mt-1">{rows.length} projetos · altere o status para atualizar o andamento</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">Projetos</h1>
+          <p className="text-slate-500 text-sm mt-1">{rows.length} projetos · altere o status para atualizar o andamento</p>
+        </div>
+        <Link href="/projetos/arquivados" className="text-sm text-blue-600 hover:underline">
+          Ver arquivados
+        </Link>
       </div>
       <ProjetosKanban projects={rows} />
     </div>
