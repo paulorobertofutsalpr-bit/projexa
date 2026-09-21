@@ -7,8 +7,6 @@ import InfoTooltip from "@/components/InfoTooltip";
 
 type User = { id: string; name: string; email: string; role: string; createdAt: string };
 
-const PLAN_LIMIT = 5; // limite provisório até existir cobrança por plano
-
 export default function UsuariosPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,8 +32,6 @@ export default function UsuariosPage() {
     else alert((await res.json()).error || "Erro ao remover.");
   }
 
-  const atLimit = users.length >= PLAN_LIMIT;
-
   return (
     <div className="max-w-2xl space-y-5">
       <div className="flex items-center justify-between">
@@ -45,28 +41,17 @@ export default function UsuariosPage() {
           </Link>
           <h1 className="text-2xl font-semibold text-slate-900 mt-2 flex items-center">
             Usuários
-            <InfoTooltip text="Cada pessoa que acessa o sistema precisa de um usuário próprio. O número de usuários disponíveis depende do plano contratado." />
+            <InfoTooltip text="Cada pessoa que acessa o sistema precisa de um usuário próprio. Sua assinatura atual permite usuários ilimitados." />
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
-            {users.length} de {PLAN_LIMIT} usuários do plano atual
-          </p>
+          <p className="text-slate-500 text-sm mt-1">{users.length} usuários cadastrados</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          disabled={atLimit}
-          title={atLimit ? "Limite de usuários do plano atingido" : ""}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md disabled:opacity-40"
+          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md"
         >
           <Plus size={16} /> Novo usuário
         </button>
       </div>
-
-      {atLimit && (
-        <div className="text-sm text-amber-700 bg-amber-50 border-l-4 border-amber-300 px-4 py-2 rounded-r-md">
-          Limite de usuários do plano atual atingido. Para adicionar mais pessoas, será necessário um plano superior
-          (cobrança por plano ainda não implementada nesta versão).
-        </div>
-      )}
 
       <div className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-100">
         {loading ? (

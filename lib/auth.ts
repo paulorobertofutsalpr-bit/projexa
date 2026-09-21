@@ -56,6 +56,8 @@ export async function getCurrentUser() {
       companyId: users.companyId,
       companyName: companies.name,
       companyLogoData: companies.logoData,
+      companySubscriptionStatus: companies.subscriptionStatus,
+      companySubscriptionOverdueSince: companies.subscriptionOverdueSince,
       expiresAt: sessions.expiresAt,
     })
     .from(sessions)

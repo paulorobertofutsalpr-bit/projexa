@@ -1,18 +1,28 @@
-# Projexa — Melhorias pós-roadmap (v13)
+# Projexa — Assinatura via Mercado Pago (v14)
 
 **Login de teste após rodar o seed:** `admin@projexa.com.br` / `projexa123`
-**Segundo usuário (equipe):** `equipe@projexa.com.br` / `projexa123`
 
-Melhorias desta entrega, a pedido:
+## Novidades desta entrega
 
-- **Orçamento mais completo**: categoria do item agora é editável (digite uma nova ou escolha uma sugerida). Novos campos: previsão de início, local de execução (se for diferente do endereço do cliente), responsável técnico, garantia, forma de pagamento, e observações comerciais.
-- **Histórico do projeto**: registre observações com data e hora automáticas. Só quem escreveu ou um administrador pode editar/excluir — testado com um usuário comum tentando mexer no registro de outra pessoa (bloqueado corretamente).
-- **Layout de Projetos mais compacto**: colunas e cards menores, com scroll vertical próprio por coluna, cabendo melhor na tela.
-- **PDF/impressão do orçamento redesenhado**: visual de documento comercial de verdade (faixa de cor, tabela com cabeçalho escuro, bloco de valor total em destaque, linhas de assinatura para contratado/contratante, rodapé).
-- **Painel de usuários** (`/configuracoes/usuarios`): cadastrar, listar e remover usuários da empresa, com indicador de limite por plano (hoje fixo em 5 — a cobrança por plano ainda não existe, é só o indicador visual).
-- **Tooltips (i)** com explicação ao passar o mouse, aplicados nos campos do formulário de orçamento por enquanto (o mais complexo). Vou espalhar pelos outros formulários nas próximas entregas.
+- **Assinatura única** (R$ 39,00/mês, usuários ilimitados) via Mercado Pago, usando a API de Assinaturas (`preapproval`) — o Mercado Pago hospeda a própria tela de pagamento, o Projexa não lida com dados de cartão.
+- Página `/assinatura`: mostra o status atual e o botão para assinar/regularizar. Fica acessível mesmo quando o acesso está bloqueado, para poder pagar.
+- **Aviso automático**: se o pagamento falhar, aparece um banner no topo do sistema avisando quantos dias faltam antes do bloqueio.
+- **Bloqueio automático após 3 dias**: se não for regularizado, o sistema bloqueia o acesso (exceto a própria página de assinatura) até o pagamento ser feito.
+- Webhook em `/api/webhooks/mercadopago` recebe as notificações do Mercado Pago e atualiza o status automaticamente.
 
-Pendente para próxima entrega: sistema de mensagens entre usuário e administrador (sugestões/feedback), e tooltips nos demais formulários (clientes, financeiro, configurações).
+## ⚠️ Configuração necessária no Render antes de funcionar
+
+1. Vá em **Settings → Environment** do seu Web Service e adicione:
+   - `MP_ACCESS_TOKEN` → seu Access Token do Mercado Pago (comece com o de **teste**, que já testamos a lógica interna com ele)
+   - `MP_PUBLIC_KEY` → sua Public Key (não é usada no backend ainda, mas deixe configurada)
+2. No painel do Mercado Pago (**Developers → Sua aplicação → Webhooks**), cadastre a URL:
+   `https://projexa-ue54.onrender.com/api/webhooks/mercadopago`
+   e marque para receber eventos de **assinaturas (subscription_preapproval)**.
+
+## O que foi testado e o que ainda depende do deploy
+
+- ✅ Testado aqui: toda a lógica de bloqueio e carência de 3 dias (simulei diferentes datas de atraso direto no banco e confirmei bloqueio/liberação automáticos), a página `/assinatura` continuando acessível mesmo bloqueado, e o tratamento de erro da chamada à API.
+- ⏳ **Só será possível testar depois do deploy**: a criação real do checkout e o recebimento do webhook, porque o Mercado Pago não está liberado na rede do meu ambiente de testes aqui (só terá acesso livre à internet quando estiver rodando no Render). Depois de configurar as variáveis acima, teste clicando em "Assinar agora" em `/assinatura` — se abrir a tela do Mercado Pago normalmente, a integração está funcionando.
 
 
 Base do sistema Projexa: Next.js 16 (App Router) + TypeScript + Tailwind CSS + Drizzle ORM + PostgreSQL.

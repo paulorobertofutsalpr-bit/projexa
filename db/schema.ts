@@ -12,6 +12,10 @@ export const companies = pgTable("companies", {
   state: text("state"),
   website: text("website"),
   logoData: text("logo_data"),
+  subscriptionStatus: text("subscription_status").notNull().default("trial"),
+  mpPreapprovalId: text("mp_preapproval_id"),
+  mpPayerEmail: text("mp_payer_email"),
+  subscriptionOverdueSince: timestamp("subscription_overdue_since"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
